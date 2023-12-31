@@ -3,15 +3,14 @@ package club.la0shu5.blog.service.impl;
 import club.la0shu5.blog.entity.User;
 import club.la0shu5.blog.mapper.UserMapper;
 import club.la0shu5.blog.service.IUserService;
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -41,11 +40,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
             // 存入redis
             loginUser.setPassword(null);
-            redisTemplate.opsForValue().set(key,loginUser,30, TimeUnit.MINUTES);
+            redisTemplate.opsForValue().set(key, loginUser, 30, TimeUnit.MINUTES);
 
             // 返回数据
             Map<String, Object> data = new HashMap<>();
             data.put("token", key);
+            return data;
+        }
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getUserInfo(String token) {
+        // 获取用户信息
+        Object obj = redisTemplate.opsForValue().get(token);
+
+        if (obj != null) {
+            User loginUser = JSON.parseObject(JSON.toJSONString(obj),User.class);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("name",loginUser.getUsername());
+            data.put("avatar",loginUser.getAvatar());
+            List<String> rolelist = new ArrayList<>();
+            rolelist.add(loginUser.getRole());
+            data.put("roles",rolelist);
             return data;
         }
         return null;
