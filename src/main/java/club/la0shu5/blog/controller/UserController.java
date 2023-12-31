@@ -43,10 +43,17 @@ public class UserController {
     @GetMapping("/info")
     public Result<Map<String, Object>> getUserInfo(@RequestParam("token") String token) {
         // 根据token获取用户信息
-        Map<String, Object> data =  userService.getUserInfo(token);
+        Map<String, Object> data = userService.getUserInfo(token);
         if (data != null) {
             return Result.success(data);
         }
         return Result.fail(20003, "用户登录信息无效");
+    }
+
+    @PostMapping("/logout")
+    public Result<?> logout(@RequestHeader("X-Token") String token) {
+        userService.logout(token);
+
+        return Result.success();
     }
 }
