@@ -3,7 +3,7 @@ package club.la0shu5.blog.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -36,9 +36,9 @@ public class Blog implements Serializable {
 
     private Boolean isCommentEnabled;
 
-    private LocalDateTime createTime;
+    private Date createTime;
 
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
     private Integer views;
 
@@ -120,18 +120,18 @@ public class Blog implements Serializable {
     public void setIsCommentEnabled(Boolean isCommentEnabled) {
         this.isCommentEnabled = isCommentEnabled;
     }
-    public LocalDateTime getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-    public LocalDateTime getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(LocalDateTime updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
     public Integer getViews() {
